@@ -12,6 +12,7 @@ const addressSchema = new mongoose.Schema({
 //immutable = you can't change what's in the script
 //min or max something is gonna show error if rule broken
 //that validate property is cool, says the error if the validator's rule is broken
+//for bf adding in script: user[0].bestfriend = id; and then await user[0].save() and if you add the populate prop it will show the bf details
 const userSchema = new mongoose.Schema({
   name: String,
   age: {
@@ -38,7 +39,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now()
   },
-  bestFriend: mongoose.SchemaTypes.ObjectId,
+  bestFriend: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'User'
+  },
   hobbies: [String],
   address: addressSchema
 });
