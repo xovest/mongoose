@@ -47,4 +47,23 @@ const userSchema = new mongoose.Schema({
   address: addressSchema
 });
 
+userSchema.methods.hola = function() {
+  console.log(`yo hola ${this.name}`);
+};
+
+//static stuff => only one func: eg. findByName()
+userSchema.statics.findByName = function(name) {
+  return this.find({ name: new RegExp(name, 'i')});
+};
+
+//query stuff => multiple funcs: eg. find().byName()
+userSchema.query.byName = function(name) {
+  return this.where({ name: new RegExp(name, 'i')});
+}
+
+//virtual (doesn't save but still, you can log something like that out cool)
+userSchema.virtual('namedEmail').get(function() {
+  return `${this.name} <${this.email}>`;
+});
+
 module.exports = mongoose.model('User', userSchema);

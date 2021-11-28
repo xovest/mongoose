@@ -10,8 +10,9 @@ run();
 //where method = find based on name, age etc.
 async function run() {
   try {
-    const user = await User.where('name').equals('Ryan');
+    const user = await User.findOne({ name: "Ryan", email: "olarumonica2016@gmail.com" });
     console.log(user);
+    console.log(user.namedEmail);
   } catch (e) {
     console.log(e.message);
   }
