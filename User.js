@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     min: 1,
     max: 100,
     validate: {
-      validator: v => v % 2 === 0,
+      validator: v => v % 2 === 1,
       message: props => `${props.value} is not an even number`
     }
   },
@@ -59,11 +59,23 @@ userSchema.statics.findByName = function(name) {
 //query stuff => multiple funcs: eg. find().byName()
 userSchema.query.byName = function(name) {
   return this.where({ name: new RegExp(name, 'i')});
-}
+};
 
 //virtual (doesn't save but still, you can log something like that out cool)
 userSchema.virtual('namedEmail').get(function() {
   return `${this.name} <${this.email}>`;
+});
+
+//pre('save' or 'validate' or 'remove') -> do something before saving
+userSchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
+});
+
+//post -> similar but after saving
+userSchema.post('save', function(doc, next) {
+  doc.hola();
+  next(); //without this we will get error save
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -12,7 +12,8 @@ async function run() {
   try {
     const user = await User.findOne({ name: "Ryan", email: "olarumonica2016@gmail.com" });
     console.log(user);
-    console.log(user.namedEmail);
+    await user.save();
+    console.log(user);
   } catch (e) {
     console.log(e.message);
   }
